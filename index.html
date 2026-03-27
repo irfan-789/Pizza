@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pizzamania Pro</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #1e1e2f, #121212);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            width: 360px;
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: fadeIn 1s ease;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ff9800;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #ff9800, #ff5722);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            animation: slideUp 0.5s ease;
+        }
+
+        .toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            background: white;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .light-mode {
+            background: linear-gradient(135deg, #ffffff, #e0e0e0);
+            color: black;
+        }
+
+        .light-mode .container {
+            background: rgba(0,0,0,0.05);
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @keyframes slideUp {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="toggle" onclick="toggleMode()">🌙/☀</div>
+
+<div class="container">
+
+    <h1>🍕 Pizzamania</h1>
+
+    <select id="pizza">
+        <option value="300">Veg Pizza (₹300)</option>
+        <option value="400">Non-Veg Pizza (₹400)</option>
+        <option value="550">Delux Veg Pizza (₹550)</option>
+        <option value="650">Delux Non-Veg Pizza (₹650)</option>
+    </select>
+
+    <label><input type="checkbox" id="cheese"> Extra Cheese (₹100)</label>
+    <label><input type="checkbox" id="toppings"> Extra Toppings (₹150)</label>
+    <label><input type="checkbox" id="take"> Take Away (₹20)</label>
+
+    <button onclick="generateBill()">Generate Bill</button>
+
+    <div id="result" class="result"></div>
+
+</div>
+
+<script>
+function generateBill() {
+
+    let price = parseInt(document.getElementById("pizza").value);
+    let index = document.getElementById("pizza").selectedIndex;
+
+    let isDelux = (index == 2 || index == 3);
+
+    let bill = "<b>🧾 BILL</b><br>";
+
+    if (!isDelux) {
+        if (document.getElementById("cheese").checked) {
+            price += 100;
+            bill += "Extra Cheese: ₹100<br>";
+        }
+
+        if (document.getElementById("toppings").checked) {
+            price += 150;
+            bill += "Extra Toppings: ₹150<br>";
+        }
+    }
+
+    if (document.getElementById("take").checked) {
+        price += 20;
+        bill += "Take Away: ₹20<br>";
+    }
+
+    bill += "<hr><b>Total: ₹" + price + "</b>";
+
+    document.getElementById("result").innerHTML = bill;
+}
+function toggleMode() {
+    document.body.classList.toggle("light-mode");
+}
+</script>
+
+</body>
+</html>
